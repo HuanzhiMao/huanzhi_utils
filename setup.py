@@ -6,4 +6,6 @@ setup(
     packages=find_packages(),
     install_requires=[],
     python_requires=">=3.6",
+    author="Huanzhi (Hans) Mao",
+    author_email="huanzhimao@gmail.com"
 )
