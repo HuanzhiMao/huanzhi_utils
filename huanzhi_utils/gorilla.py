@@ -44,3 +44,27 @@ def make_json_serializable(value):
             return value
         except (TypeError, ValueError):
             return str(value)
+
+def collapse_json_objects(file_path):
+    with open(file_path, "r") as file:
+        content = file.read()
+
+    objects = []
+    depth = 0
+    obj_start = 0
+    for i, char in enumerate(content):
+        if char == "{":
+            if depth == 0:
+                obj_start = i
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                obj = content[obj_start : i + 1]
+                objects.append(obj)
+
+    with open(file_path, "w") as out_file:
+        for obj in objects:
+            json_obj = json.loads(obj)
+            compact_json = json.dumps(json_obj, separators=(",", ":"))
+            out_file.write(compact_json + "\n")
